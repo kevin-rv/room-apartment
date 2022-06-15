@@ -16,7 +16,8 @@
         "symfony/framework-bundle": "*",
         "symfony/proxy-manager-bridge": "5.4.*",
         "symfony/runtime": "*",
-        "symfony/yaml": "*"
+        "symfony/yaml": "*",
+        "ext-json": "*"
     },
     "config": {
         "allow-plugins": {

@@ -40,12 +40,12 @@ class Room
     private $image;
 
     /**
-     * @ORM\OneToMany(targetEntity=reservation::class, mappedBy="room")
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="room")
      */
     private $reservation;
 
     /**
-     * @ORM\ManyToOne(targetEntity=apartment::class, inversedBy="rooms")
+     * @ORM\ManyToOne(targetEntity=Apartment::class, inversedBy="rooms")
      */
     private $apartment;
 
