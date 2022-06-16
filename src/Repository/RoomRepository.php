@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Apartment;
 use App\Entity\Room;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -38,6 +40,35 @@ class RoomRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * @return Room[] Returns an array of Room objects
+     */
+    public function findRoomByApartment($apartmentId): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.apartment = :val')
+            ->setParameter('val', $apartmentId)
+            ->orderBy('r.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+//    /**
+//     * @return Room|null Returns an Room objects
+//     */
+//    public function findOneRoomByApartment(int $apartmentId, int $roomId): ?Room
+//    {
+//        $qb =  $this->createQueryBuilder('r');
+//        $qb
+//            ->innerJoin(Apartment::class, 'a', Join::WITH, 'r.apartment = a.id')
+//            ->where($qb->expr()->eq('a.id', $apartmentId))
+//            ->andWhere($qb->expr()->eq('r.id', $roomId));
+//            $query = $qb->getQuery();
+//
+//        return $query->getOneOrNullResult();
+//    }
 
 //    /**
 //     * @return Room[] Returns an array of Room objects

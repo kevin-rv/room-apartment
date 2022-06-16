@@ -17,7 +17,7 @@ class Json
         return $data;
     }
 
-    public static function encore(array $data): string
+    public static function encode(array $data): string
     {
         $json = json_encode($data);
 

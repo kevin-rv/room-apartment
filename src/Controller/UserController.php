@@ -22,4 +22,15 @@ class UserController extends AbstractController
         $entityManager->flush();
         return $this->json($user);
     }
+
+    /**
+     * @Route("/users", name="get_all_user",  methods={"GET"})
+     */
+    public function getAllUsers(ManagerRegistry $doctrine): JsonResponse
+    {
+        $entityManager = $doctrine->getManager();
+
+        $users = $entityManager->getRepository(User::class)->findAll();
+        return $this->json($users);
+    }
 }
