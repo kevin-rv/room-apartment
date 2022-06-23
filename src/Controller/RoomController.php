@@ -70,9 +70,9 @@ class RoomController extends AbstractController
 
 
     /**
-     * @Route("/apartment/{apartmentId}/rooms", name="get_all_room",  methods={"GET"})
+     * @Route("/apartment/{apartmentId}/rooms", name="get_all_room_apartment",  methods={"GET"})
      */
-    public function getAllRoom(int $apartmentId): JsonResponse
+    public function getAllRoomInApartment(int $apartmentId): JsonResponse
     {
         $apartment = $this->manager->getRepository(Apartment::class)->find($apartmentId);
 
@@ -80,6 +80,19 @@ class RoomController extends AbstractController
             return $this->json(['error' => 'Not Found'], '404');
         }
         $rooms = $this->roomRepository->findRoomByApartment($apartment);
+
+        $normalizedRoom = $this->serializer->normalize($rooms, null, [
+            AbstractNormalizer::GROUPS => ['room']
+        ]);
+        return $this->json($normalizedRoom);
+    }
+
+    /**
+     * @Route("/rooms", name="get_all_room",  methods={"GET"})
+     */
+    public function getAllRoom(): JsonResponse
+    {
+        $rooms = $this->manager->getRepository(Room::class)->findAll();
 
         $normalizedRoom = $this->serializer->normalize($rooms, null, [
             AbstractNormalizer::GROUPS => ['room']

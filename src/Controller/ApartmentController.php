@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ApartmentController extends AbstractController
@@ -58,7 +59,10 @@ class ApartmentController extends AbstractController
         $entityManager = $doctrine->getManager();
 
         $apartments = $entityManager->getRepository(Apartment::class)->findAll();
-        return $this->json($apartments);
+        $normalizedApartment = $this->serializer->normalize($apartments, null, [
+            AbstractNormalizer::GROUPS => ['room']
+        ]);
+        return $this->json($normalizedApartment);
     }
 
     /**
