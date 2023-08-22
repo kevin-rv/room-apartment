@@ -132,7 +132,6 @@ class RoomController extends AbstractController
     {
         $payload = json_decode($request->getContent(), true);
 
-        /** @var Room $room */
         $room = $this->manager->getRepository(Room::class)->find($roomId);
 
         $room->setNumber($payload['number']);
@@ -196,6 +195,26 @@ class RoomController extends AbstractController
     {
         $reservations = $this->manager->getRepository(Reservation::class)->findAll();
         $normalizedReservation = $this->serializer->normalize($reservations, null, [
+            AbstractNormalizer::GROUPS => ['reservation']
+        ]);
+        return $this->json($normalizedReservation);
+    }
+
+    /**
+     * @Route("/editReservation/{reservationId}", name="update_reservation",  methods={"PATCH"})
+     */
+    public function updateReservation(int $reservationId, Request $request): JsonResponse
+    {
+        $payload = json_decode($request->getContent(), true);
+
+        $reservation = $this->manager->getRepository(Reservation::class)->find($reservationId);
+
+        $reservation->setValue($payload['value']);
+
+        $this->manager->persist($reservation);
+        $this->manager->flush();
+
+        $normalizedReservation = $this->serializer->normalize($reservation, null, [
             AbstractNormalizer::GROUPS => ['reservation']
         ]);
         return $this->json($normalizedReservation);

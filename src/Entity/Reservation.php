@@ -27,6 +27,7 @@ class Reservation
 
     /**
      * @ORM\ManyToOne(targetEntity=Room::class, inversedBy="reservation")
+     * @Groups({"reservation"})
      */
     private $room;
 

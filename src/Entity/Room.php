@@ -17,12 +17,16 @@ class Room
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"apartment"})
+     * @Groups({"room"})
+     * @Groups({"reservation"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"room"})
+     * @Groups({"reservation"})
      */
     private $number;
 
@@ -51,12 +55,18 @@ class Room
 
     /**
      * @ORM\ManyToOne(targetEntity=Apartment::class, inversedBy="rooms")
+     * @Groups({"room"})
      */
     private $apartment;
 
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getNumber(): ?int

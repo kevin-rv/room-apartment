@@ -18,12 +18,14 @@ class Apartment
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"apartment"})
+     * @Groups({"room"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"apartment"})
+     * @Groups({"room"})
      */
     private $name;
 
@@ -53,6 +55,7 @@ class Apartment
 
     /**
      * @ORM\OneToMany(targetEntity=Room::class, mappedBy="apartment")
+     *  @Groups({"apartment"})
      */
     private $rooms;
 

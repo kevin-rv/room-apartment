@@ -54,13 +54,11 @@ class ApartmentController extends AbstractController
     /**
      * @Route("/apartments", name="get_all_apartment",  methods={"GET"})
      */
-    public function getAllApartment(ManagerRegistry $doctrine): JsonResponse
+    public function getAllApartment(): JsonResponse
     {
-        $entityManager = $doctrine->getManager();
-
-        $apartments = $entityManager->getRepository(Apartment::class)->findAll();
+        $apartments = $this->manager->getRepository(Apartment::class)->findAll();
         $normalizedApartment = $this->serializer->normalize($apartments, null, [
-            AbstractNormalizer::GROUPS => ['room']
+            AbstractNormalizer::GROUPS => ['apartment']
         ]);
         return $this->json($normalizedApartment);
     }
@@ -94,7 +92,11 @@ class ApartmentController extends AbstractController
         $this->manager->persist($apartment);
         $this->manager->flush();
 
-        return $this->json($apartment);
+        $normalizedApartment = $this->serializer->normalize($apartment, null, [
+            AbstractNormalizer::GROUPS => ['apartment']
+        ]);
+        return $this->json($normalizedApartment);
+
     }
 
 
